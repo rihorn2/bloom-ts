@@ -7,8 +7,7 @@ export interface IBloomFilter<T> {
 }
 
 export class BloomFilter<T> implements IBloomFilter<T> {
-    // TODO: number takes up many bytes, look into storing bit, or impl delete and actually use number
-    // bool doesn't effectively save on memory.
+    // TODO: determine if uint16 will suport count for delete, switch to 32
     private _filter: Uint16Array;
     private _size: number;
     private _entryCount: number;
