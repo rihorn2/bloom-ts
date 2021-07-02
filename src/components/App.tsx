@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { FontWeights, IStackStyles, IStackTokens, ITextStyles, Stack, ThemeProvider, Toggle, Text, ITextFieldStyles, TextField } from '@fluentui/react';
+import { FontWeights, IStackStyles, IStackTokens, ITextStyles, Stack, ThemeProvider, Toggle, Text, ITextFieldStyles, TextField, PrimaryButton } from '@fluentui/react';
 import './App.css';
 import { darkTheme, lightTheme } from '../themes';
 import { BloomFilter, IBloomFilter } from '../bloom/BloomFilter';
@@ -51,6 +51,12 @@ export const App = () => {
       setTestWord(newValue || '');
   }, []);
 
+  const addWord = useCallback(
+    () => { 
+      bloomFilter.add(testWord);
+      setTestWord('');
+  }, []);
+
   return (
     <ThemeProvider
       applyTo="body"
@@ -74,11 +80,18 @@ export const App = () => {
           value={testWord}
           onChange={onChangeTestWord}
         />
-        {knownWord ?
-          <Text> I know that word! ...I think?</Text> :
-          <Text> Never heard of it. Should I learn it?</Text>
+        {testWord && 
+          <>
+          {knownWord ?
+            <Text> I know that word! ...I think?</Text> :
+            <Stack>
+              <Text> Never heard of it. Should I learn it?</Text>
+              <PrimaryButton onClick={addWord}>Yes!</PrimaryButton>
+            </Stack>
+          }
+          </>
         }
-      </Stack>
+        </Stack>
     </ThemeProvider>
   );
 }
