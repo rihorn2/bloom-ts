@@ -29,6 +29,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
             // TODO, increment to support delete (after basic tests) (check for overflow)
             this._filter[filterIndex] = 1;
         })
+        console.log(item)
         this._entryCount++;
     }
 

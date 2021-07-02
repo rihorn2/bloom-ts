@@ -52,10 +52,10 @@ export const App = () => {
   }, []);
 
   const addWord = useCallback(
-    () => { 
-      bloomFilter.add(testWord);
+    (word) => { 
+      bloomFilter.add(word);
       setTestWord('');
-  }, []);
+  }, [bloomFilter]);
 
   return (
     <ThemeProvider
@@ -86,7 +86,7 @@ export const App = () => {
             <Text> I know that word! ...I think?</Text> :
             <Stack>
               <Text> Never heard of it. Should I learn it?</Text>
-              <PrimaryButton onClick={addWord}>Yes!</PrimaryButton>
+              <PrimaryButton onClick={() => addWord(testWord)}>Yes!</PrimaryButton>
             </Stack>
           }
           </>
