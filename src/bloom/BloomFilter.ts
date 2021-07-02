@@ -1,5 +1,5 @@
 import { KMHasher } from "./Hashing/KMHasher";
-import { IHasher } from "./IHasher";
+import { IHasher } from "./Hashing/IHasher";
 
 export interface IBloomFilter<T> {
     add(item: T): void;
@@ -35,6 +35,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
 
     public contains(item: T): boolean {
         let newHashes = this._hasher.getHashes(item);
+        console.log(newHashes)
         return newHashes.every((filterIndex) => { return this._filter[filterIndex] !== 0; });
     }
 }

@@ -1,4 +1,4 @@
-import { IHasher } from "../IHasher";
+import { IHasher } from "./IHasher";
 import * as crypto from 'crypto'
 
 // build off this https://www.eecs.harvard.edu/~michaelm/postscripts/tr-02-05.pdf
@@ -18,7 +18,7 @@ export class KMHasher<T> implements IHasher<T> {
 
         for (let i=0; i < this._numHashes; i++) {
             // try out the extended double hash
-            result[i] = slice_1 + i * slice_2 + i*i % this._size;
+            result[i] = (slice_1 + i * slice_2 + i*i) % this._size;
         }
 
         return result;
