@@ -36,6 +36,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
     public contains(item: T): boolean {
         let newHashes = this._hasher.getHashes(item);
         console.log(newHashes)
+        console.log(this._filter)
         return newHashes.every((filterIndex) => { return this._filter[filterIndex] !== 0; });
     }
 }

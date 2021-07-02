@@ -19,22 +19,24 @@ const stackStyles: Partial<IStackStyles> = {
 
 export const App = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-  const [dictionary, setDictionary] = useState<string[]>(["yes", "no", "true"]);
+  const [dictionary, setDictionary] = useState<string[]>([]);
   const [testWord, setTestWord] = useState<string>("");
   const [knownWord, setKnownWord] = useState<boolean>(false);
+  const [bloomFilter, setBloomFilter] = useState<IBloomFilter<string>>(new BloomFilter<string>(2, 1))
 
-  let bloomFilter: IBloomFilter<string> = new BloomFilter<string>(50, 3);;
   
   // set default dictionary to content of file
   useEffect(() => {
+    setDictionary(["yes", "no", "true"]);
     // TODO: set up (fetch?) default dict
   }, []);
   // create bloom filter from dictionary
   useEffect(()=>{
-    bloomFilter = new BloomFilter<string>(50, 3);
+    let newBloomFilter = new BloomFilter<string>(50, 3);
     dictionary.forEach(word => {
-      bloomFilter.add(word);
+      newBloomFilter.add(word);
     });
+    setBloomFilter(newBloomFilter)
   }, [dictionary]);
 
   useEffect(() => {
