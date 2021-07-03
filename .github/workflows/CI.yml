@@ -5,7 +5,7 @@ env:
   folder_to_upload: dist/apps/dashboard
   blob_account: rihorn24316837458
   blob_container: bloom
-  blob_path: ${{ github.head_ref }}
+  blob_path: ${{ github.GITHUB_SHA }}
 
 # Controls when the workflow will run
 on:
