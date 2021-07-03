@@ -2,7 +2,7 @@
 
 name: CI
 env:
-  folder_to_upload: dist/apps/dashboard
+  folder_to_upload: dist/index.html
   blob_account: rihorn24316837458
   blob_container: bloom
   blob_path: ${{ github.GITHUB_SHA }}
@@ -44,11 +44,11 @@ jobs:
 
       - id: publish_url
         run: |
-          echo "::set-output name=url::https://${{env.blob_account}}.blob.core.windows.net/${{env.blob_container}}/${{env.blob_path}}/index.html"
+          echo "::set-output name=url::https://${{env.blob_account}}.blob.core.windows.net/${{env.blob_container}}/test/index.html"
       - name: Upload dashboard ${{steps.publish_url.outputs.url}}
         uses: Azure/cli@v1.0.0
         with:
           azcliversion: 2.16.0
           inlineScript: |
-            az storage blob sync -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" -s "${{env.folder_to_upload}}" -d "${{env.blob_path}}" --sas-token "${{secrets.BLOB_SAS}}"
+            az storage blob sync -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" -s "${{env.folder_to_upload}}" -d "test" --sas-token "${{secrets.BLOB_SAS}}"
 
