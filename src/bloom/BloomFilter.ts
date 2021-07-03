@@ -2,8 +2,11 @@ import { KMHasher } from "./Hashing/KMHasher";
 import { IHasher } from "./Hashing/IHasher";
 
 export interface IBloomFilter<T> {
+    numHashes: number;
     add(item: T): void;
     contains(item: T): boolean;
+    peekFilter(): Uint16Array;
+    currentCount(): number;
 }
 
 export class BloomFilter<T> implements IBloomFilter<T> {
@@ -13,7 +16,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
     private _entryCount: number;
     private _hasher: IHasher<T>
 
-    constructor(size: number, numHashes: number) {
+    constructor(size: number, public numHashes: number) {
         // 
         this._size = size;
         this._filter = new Uint16Array(size).fill(0);
@@ -38,5 +41,13 @@ export class BloomFilter<T> implements IBloomFilter<T> {
         console.log(newHashes)
         console.log(this._filter)
         return newHashes.every((filterIndex) => { return this._filter[filterIndex] !== 0; });
+    }
+
+    public peekFilter(): Uint16Array {
+        return new Uint16Array(this._filter);
+    }
+
+    public currentCount(): number {
+        return this._entryCount
     }
 }
