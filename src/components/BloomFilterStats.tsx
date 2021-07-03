@@ -23,7 +23,7 @@ export const BloomFilterStats = ({filterState, numHashes}: BloomFilterStatsProps
         <Stack horizontalAlign="center" verticalAlign="center" verticalFill styles={stackStyles} tokens={stackTokens}>
             <Stack horizontal tokens={{childrenGap: 3}}>
                 <Text styles={boldStyle}>Percent of filter still empty: </Text>
-                <Text>{` ${ratioZeros * 100}%`}</Text>
+                <Text>{` ${(ratioZeros * 100).toFixed(2)}%`}</Text>
             </Stack>
             <Stack horizontal tokens={{childrenGap: 3}}>
                 <Text styles={boldStyle}>Chance of false positive: </Text>

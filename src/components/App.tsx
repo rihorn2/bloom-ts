@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import { Stack, ThemeProvider, Toggle, Text, TextField, PrimaryButton } from '@fluentui/react';
 import './App.css';
 import { darkTheme, lightTheme } from '../themes';
@@ -10,38 +10,29 @@ import testDictionary from '../test_data/wordlist.json'
 
 export const App = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-  const [dictionary, setDictionary] = useState<string[]>([]);
+  const [dictionary, setDictionary] = useState<string[]>(testDictionary as string[]);
   const [percentLoaded, setPercentLoaded] = useState<number>(0);
   const [testWord, setTestWord] = useState<string>("");
   const [knownWord, setKnownWord] = useState<boolean>(false);
-  const [bloomFilter, setBloomFilter] = useState<IBloomFilter<string>>(new BloomFilter<string>(2, []));
+  const bloomFilter = useRef<IBloomFilter<string>>(new BloomFilter<string>(3, []));
   // copy of internal representation of filter. Made public for statistics.
   const [filterState, setFilterState] = useState<Uint16Array>(new Uint16Array());
-
-  
-  // set default dictionary to content of file
-  useEffect(() => {
-    setDictionary(testDictionary as string[]);
-    // TODO: set up (fetch?) default dict
-  }, []);
-
-  const loader = useCallback((percentLoaded: number) => {
-    setPercentLoaded(percentLoaded);
-    if (percentLoaded == 1) {
-      setFilterState(bloomFilter.peekFilter());
-    }
-  }, [bloomFilter])
 
   // create bloom filter from dictionary
   useEffect(()=>{
     // abort any async init of existing filter
-    bloomFilter.abortInitialization();
-    let newBloomFilter = new BloomFilter<string>(5000000, dictionary, undefined, loader);
-    setBloomFilter(newBloomFilter);
+    bloomFilter.current.abortInitialization();
+    const callback = (percentLoaded: number) => {
+      setPercentLoaded(percentLoaded);
+      if (percentLoaded === 1) {
+        setFilterState(bloomFilter.current.peekFilter());
+      }
+    };
+    bloomFilter.current = new BloomFilter<string>(5000000, dictionary, undefined, callback);
   }, [dictionary]);
 
   useEffect(() => {
-    let known = bloomFilter.contains(testWord);
+    let known = bloomFilter.current.contains(testWord);
     setKnownWord(known);
   }, [testWord, bloomFilter])
 
@@ -52,9 +43,9 @@ export const App = () => {
 
   const addWord = useCallback(
     (word) => { 
-      bloomFilter.add(word);
+      bloomFilter.current.add(word);
       setTestWord('');
-      setFilterState(bloomFilter.peekFilter());
+      setFilterState(bloomFilter.current.peekFilter());
   }, [bloomFilter]);
 
   return (
@@ -75,7 +66,7 @@ export const App = () => {
         <Text variant="large">
           Ask me if I've seen a word before! No false negatives! Chance of false positive...
         </Text>
-        {percentLoaded == 1 ? <>
+        {percentLoaded === 1 ? <>
           <TextField 
             label="Word to evaluate"
             value={testWord}
@@ -92,7 +83,7 @@ export const App = () => {
             }
             </>
           }
-          <BloomFilterStats filterState={filterState} numHashes={bloomFilter.numHashes}/>
+          <BloomFilterStats filterState={filterState} numHashes={bloomFilter.current.numHashes}/>
           </> :
           <Text>Loading... {(100 * percentLoaded).toFixed(0) + "%"}</Text>
         }
