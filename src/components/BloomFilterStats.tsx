@@ -1,7 +1,5 @@
-import { ITextStyles, FontWeights, IStackTokens, Stack , Text } from "@fluentui/react";
-import React, { useState } from "react";
-import { useMemo } from "react";
-import { IBloomFilter } from "../bloom/BloomFilter";
+import { Stack , Text } from "@fluentui/react";
+import React, { useMemo }  from "react";
 import { boldStyle, stackStyles, stackTokens } from "./CommonFluentStyles";
 
 

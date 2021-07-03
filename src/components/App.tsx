@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import { FontWeights, IStackStyles, IStackTokens, ITextStyles, Stack, ThemeProvider, Toggle, Text, ITextFieldStyles, TextField, PrimaryButton } from '@fluentui/react';
+import { Stack, ThemeProvider, Toggle, Text, TextField, PrimaryButton } from '@fluentui/react';
 import './App.css';
 import { darkTheme, lightTheme } from '../themes';
 import { BloomFilter, IBloomFilter } from '../bloom/BloomFilter';
