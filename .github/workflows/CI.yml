@@ -2,7 +2,7 @@
 
 name: CI
 env:
-  folder_to_upload: dist/index.html
+  folder_to_upload: dist
   blob_account: rihorn24316837458
   blob_container: bloom
   blob_path: ${{ github.GITHUB_SHA }}
