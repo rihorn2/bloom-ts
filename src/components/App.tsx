@@ -5,32 +5,39 @@ import { darkTheme, lightTheme } from '../themes';
 import { BloomFilter, IBloomFilter } from '../bloom/BloomFilter';
 import { BloomFilterStats } from './BloomFilterStats';
 import { boldStyle, stackStyles, stackTokens } from './CommonFluentStyles';
-
+import testDictionary from '../test_data/wordlist.json'
 
 
 export const App = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [dictionary, setDictionary] = useState<string[]>([]);
+  const [percentLoaded, setPercentLoaded] = useState<number>(0);
   const [testWord, setTestWord] = useState<string>("");
   const [knownWord, setKnownWord] = useState<boolean>(false);
-  const [bloomFilter, setBloomFilter] = useState<IBloomFilter<string>>(new BloomFilter<string>(2, 1));
+  const [bloomFilter, setBloomFilter] = useState<IBloomFilter<string>>(new BloomFilter<string>(2, []));
   // copy of internal representation of filter. Made public for statistics.
   const [filterState, setFilterState] = useState<Uint16Array>(new Uint16Array());
 
   
   // set default dictionary to content of file
   useEffect(() => {
-    setDictionary(["yes", "no", "true"]);
+    setDictionary(testDictionary as string[]);
     // TODO: set up (fetch?) default dict
   }, []);
+
+  const loader = useCallback((percentLoaded: number) => {
+    setPercentLoaded(percentLoaded);
+    if (percentLoaded == 1) {
+      setFilterState(bloomFilter.peekFilter());
+    }
+  }, [bloomFilter])
+
   // create bloom filter from dictionary
   useEffect(()=>{
-    let newBloomFilter = new BloomFilter<string>(50, 3);
-    dictionary.forEach(word => {
-      newBloomFilter.add(word);
-    });
+    // abort any async init of existing filter
+    bloomFilter.abortInitialization();
+    let newBloomFilter = new BloomFilter<string>(5000000, dictionary, undefined, loader);
     setBloomFilter(newBloomFilter);
-    setFilterState(newBloomFilter.peekFilter());
   }, [dictionary]);
 
   useEffect(() => {
@@ -68,23 +75,27 @@ export const App = () => {
         <Text variant="large">
           Ask me if I've seen a word before! No false negatives! Chance of false positive...
         </Text>
-        <TextField 
-          label="Word to evaluate"
-          value={testWord}
-          onChange={onChangeTestWord}
-        />
-        {testWord && 
-          <>
-          {knownWord ?
-            <Text> I know that word! ...I think?</Text> :
-            <Stack>
-              <Text> Never heard of it. Should I learn it?</Text>
-              <PrimaryButton onClick={() => addWord(testWord)}>Yes!</PrimaryButton>
-            </Stack>
+        {percentLoaded == 1 ? <>
+          <TextField 
+            label="Word to evaluate"
+            value={testWord}
+            onChange={onChangeTestWord}
+          />
+          {testWord && 
+            <>
+            {knownWord ?
+              <Text> I know that word! ...I think?</Text> :
+              <Stack>
+                <Text> Never heard of it. Should I learn it?</Text>
+                <PrimaryButton onClick={() => addWord(testWord)}>Yes!</PrimaryButton>
+              </Stack>
+            }
+            </>
           }
-          </>
+          <BloomFilterStats filterState={filterState} numHashes={bloomFilter.numHashes}/>
+          </> :
+          <Text>Loading... {(100 * percentLoaded).toFixed(0) + "%"}</Text>
         }
-        <BloomFilterStats filterState={filterState} numHashes={bloomFilter.numHashes}/>
         </Stack>
     </ThemeProvider>
   );
