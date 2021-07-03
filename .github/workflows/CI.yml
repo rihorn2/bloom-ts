@@ -2,7 +2,7 @@
 
 name: CI
 env:
-  folder_to_upload: dist
+  folder_to_upload: build/index.html
   blob_account: rihorn24316837458
   blob_container: bloom
   blob_path: ${{ github.GITHUB_SHA }}
@@ -50,5 +50,5 @@ jobs:
         with:
           azcliversion: 2.16.0
           inlineScript: |
-            az storage blob sync -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" -s "${{env.folder_to_upload}}" -d "test" --sas-token "${{secrets.BLOB_SAS}}"
+            az storage blob upload -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" --file "${{env.folder_to_upload}}" --name index.html --sas-token "${{secrets.BLOB_SAS}}"
 
