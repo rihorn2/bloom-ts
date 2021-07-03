@@ -51,5 +51,5 @@ jobs:
           azcliversion: 2.16.0
           inlineScript: |
             az storage blob upload -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" --file "${{env.folder_to_upload}}" --name index.html --sas-token "${{secrets.BLOB_SAS}}"
-            az storage blob upload -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" --file "${{env.folder_to_upload}}" --name ${GITHUB_SHA}/index.html --sas-token "${{secrets.BLOB_SAS}}"
+            az storage blob upload -c "${{env.blob_container}}" --account-name "${{env.blob_account}}" --file "${{env.folder_to_upload}}" --name ${{github.GITHUB_SHA}}/index.html --sas-token "${{secrets.BLOB_SAS}}"
 
