@@ -10,7 +10,7 @@ import testDictionary from '../test_data/wordlist.json'
 
 export const App = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
-  const [dictionary, setDictionary] = useState<string[]>(testDictionary as string[]);
+  const [dictionary] = useState<string[]>(testDictionary as string[]);
   const [percentLoaded, setPercentLoaded] = useState<number>(0);
   const [testWord, setTestWord] = useState<string>("");
   const [knownWord, setKnownWord] = useState<boolean>(false);

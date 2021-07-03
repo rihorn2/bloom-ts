@@ -30,7 +30,7 @@ export class KMHasher<T> implements IHasher<T> {
             return crypto.createHash('md5').update(item).digest("hex"); 
         }
         else{
-            throw `Unimplemented hashing of type ${typeof item}.`;
+            throw new Error(`Unimplemented hashing of type ${typeof item}.`);
         }
     }
 }
