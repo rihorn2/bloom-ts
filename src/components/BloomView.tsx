@@ -19,7 +19,7 @@ export interface IBloomViewProps {
     numHashes: number;
 }
 
-export const BloomView = (props : IBloomViewProps) => {
+export const BloomView = (props : IBloomViewProps): JSX.Element => {
     return (
         <>
         <Stack horizontal tokens={{childrenGap: 15}}>
