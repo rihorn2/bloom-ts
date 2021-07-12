@@ -13,7 +13,7 @@ const dictionaryOptions: IDropdownOption<string[]>[] = [
   { key: "secondHalf", text: "Second Half", data: testDict.slice(Math.floor(testDict.length / 2))}
 ];
 
-export const BloomViewContainer = () => {
+export const BloomViewContainer = (): JSX.Element => {
     const [dictionary, setDictionary] = useState<IDropdownOption<string[]>>(dictionaryOptions[1]);
     const [testWord, setTestWord] = useState<string>("");
     const [isKnownWord, setIsKnownWord] = useState<boolean>(false);

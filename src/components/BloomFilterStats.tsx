@@ -8,7 +8,7 @@ interface BloomFilterStatsProps {
     numHashes: number
 }
 
-export const BloomFilterStats = ({filterState, numHashes}: BloomFilterStatsProps) => {
+export const BloomFilterStats = ({filterState, numHashes}: BloomFilterStatsProps): JSX.Element => {
     const ratioZeros = useMemo(()=> {
         if (filterState.length === 0) {
             return NaN;

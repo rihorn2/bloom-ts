@@ -5,7 +5,7 @@ import { darkTheme, lightTheme } from '../themes';
 import { BloomViewContainer } from './BloomViewContainer';
 
 
-export const App = () => {
+export const App = (): JSX.Element => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
   return (
