@@ -1,11 +1,7 @@
-import { Dropdown, IDropdownOption, PrimaryButton, Stack, Text, TextField, Toggle } from "@fluentui/react";
+import { Dropdown, IDropdownOption, PrimaryButton, Stack, Text, TextField } from "@fluentui/react";
 import { FormEvent } from "react";
-
 import { boldStyle, stackStyles, stackTokens } from "./CommonFluentStyles";
-
 import { BloomFilterStats } from "./BloomFilterStats";
-
-
 
 
 export interface IBloomViewProps {

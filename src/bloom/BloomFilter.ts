@@ -34,7 +34,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
     // ensure this takes in large objects (strings, buffers)
     // hashing can be expensive 
     public add(item: T): void {
-        let newHashes = this._hasher.getHashes(item);
+        const newHashes = this._hasher.getHashes(item);
         newHashes.forEach((filterIndex) => {
             // TODO, increment to support delete (after basic tests) (check for overflow)
             this._filter[filterIndex] = 1;
@@ -43,7 +43,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
     }
 
     public contains(item: T): boolean {
-        let newHashes = this._hasher.getHashes(item);
+        const newHashes = this._hasher.getHashes(item);
         return newHashes.every((filterIndex) => { return this._filter[filterIndex] !== 0; });
     }
 
@@ -59,7 +59,7 @@ export class BloomFilter<T> implements IBloomFilter<T> {
         this._abortInitialization = true;
     }
 
-    private chunkedInitialization(startLocation: number = 0): void {
+    private chunkedInitialization(startLocation = 0): void {
         const chunksize = 10000;
         const stopLocation = Math.min(this._initialList.length, startLocation + chunksize);
         for(let i = startLocation; i < stopLocation; i++) {

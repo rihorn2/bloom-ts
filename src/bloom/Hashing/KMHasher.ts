@@ -9,7 +9,7 @@ export class KMHasher<T> implements IHasher<T> {
 
     // Return index of bits to add in filter
     public getHashes(item: T): Array<number> {
-        let result = new Array<number>(this._numHashes);
+        const result = new Array<number>(this._numHashes);
         const md5 = this.getHash(item)
 
         // slice the hash, taking 32 bit 
