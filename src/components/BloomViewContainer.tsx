@@ -54,7 +54,7 @@ export const BloomViewContainer = () => {
             setIsKnownWord(false);
             return;
         }
-        let known = bloomFilter.current.contains(testWord);
+        const known = bloomFilter.current.contains(testWord);
         setIsKnownWord(known);
     }, [testWord, filterInitialized]);
 
