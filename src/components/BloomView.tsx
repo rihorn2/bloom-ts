@@ -21,16 +21,14 @@ export interface IBloomViewProps {
 
 export const BloomView = (props : IBloomViewProps): JSX.Element => {
     return (
-        <>
-        <Stack horizontal tokens={{childrenGap: 15}}>
-            <Dropdown
+    <>
+      <Stack horizontalAlign="center" verticalAlign="center" verticalFill styles={stackStyles} tokens={stackTokens}>
+        <Dropdown
             label="Sample Dictionary"
             selectedKey={props.dictionary.key}
             onChange={props.onDictionarySelect}
             options={props.dictionaryOptions}
-            />
-        </Stack>
-      <Stack horizontalAlign="center" verticalAlign="center" verticalFill styles={stackStyles} tokens={stackTokens}>
+        />
         <Text variant="xxLarge" styles={boldStyle}>
           Bloom Filter Explorer:  
         </Text>
